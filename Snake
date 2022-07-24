@@ -48,7 +48,7 @@ void Initmap() {
 }
 void Drawmap() {
     clear();
-    printf("\n\n\n\n\n\n");
+    printf("\n\n\n");
 	for (int i = 0; i < ROW; i++)
 	{
         printf("                     ");
@@ -66,7 +66,7 @@ void Drawmap() {
 		}
         printf("\n");
 	}
-    printf("\n\nscore:%d\n",score);
+    printf("                                         score:%d\n",score);
 }
 void fuclength(){
 	length++;
@@ -113,11 +113,8 @@ void Move() {//从尾部开始后面的等于前面的坐标
 
 	}
 }
-void directioncontrol(int fd_stdin) {
-    char in[32];
-    printf("  W: Up\n  S: Down\n  A: Left\n  D: Rigth           \nWrite the direction what you want to walk: ");
-    read(fd_stdin, in, 32);
-    switch (in[0])
+void directioncontrol(int fd_stdin,char choice) {
+    switch (choice)
     {
         case 'W':
         case 'w':
@@ -186,32 +183,57 @@ void snake_game(int fd_stdin){
     Drawsnake();
     Drawfood();
     Drawmap();
-    while(1)
+    int lived=1;
+    while(lived)
     {
-        Drawsnake();
-        Drawmap();
-        directioncontrol(fd_stdin);
+	    char in[32];
+	    printf("  W: Up\n  S: Down\n  A: Left\n  D: Rigth           \nWrite the direction what you want to walk: \n");
+	    printf("command example: w 3(you can up three times(please be less than 10))\nif you want to follow last,please enter\n");
+	    printf("command:");
+	    int p=read(fd_stdin, in, 32);
+	    in[p]=0;
+	    char comm;
+	    comm=in[0];
+	    int i=1;
+	    char times='1';
+	    while((in[i]<'0'||in[i]>'9')&&in[i]!=0)
+	    {
+		i++;
+	    }
+	    if(in[i]!=0)
+		times=in[i];
+	    int time=0;
+	    time=time+(times+1-'1');
+	    int t=0;
+	    while(t<time)
+	    {
+		directioncontrol(fd_stdin,comm);
 		Move();
-        if(death())
-        {
-            clear();
-            printf("\n                        Game Over             \n                  push any key and continue\n");
-            char in[1];
-            read(fd_stdin, in, 1);
-            break;
-        }
-        if (M[Coordinate[0][0]][Coordinate[0][1]] == -1)
+		if(death())
 		{
-			eated = true;
-			if (eated == true)               //如果吃到了食物
-			{
-				fuclength();
-				eated = false;        //设置为false，不然无限变长
-			}
-			score += 10;
-			Drawfood();
-		//	M[Coordinate[0][0]][Coordinate[0][1]] = 0;
-            Drawsnake();
+		    clear();
+		    printf("\n                        Game Over             \n                  push any key and continue\n");
+		    char in[1];
+		    read(fd_stdin, in, 1);
+		    lived=0;
+		    break;
 		}
+		if (M[Coordinate[0][0]][Coordinate[0][1]] == -1)
+		{
+		    eated = true;
+		    if (eated == true)               //如果吃到了食物
+		    {
+			fuclength();
+			eated = false;        //设置为false，不然无限变长
+		    }
+		    score += 10;
+		    Drawfood();
+		//	M[Coordinate[0][0]][Coordinate[0][1]] = 0;
+		    Drawsnake();
+		}
+		t++;
+		Drawsnake();
+		Drawmap();
+	    }
     }
 }
