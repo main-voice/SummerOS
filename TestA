@@ -1,0 +1,91 @@
+/*======================================================================*
+                               TestA
+ *======================================================================*
+							                        Kerr & Brian.Z  2020
+ *======================================================================*/
+void TestA()
+{
+	char buff[128];
+	//char command_3[100], command_4[100], command_5[100];
+	int fd_stdin  = open("/dev_tty0", O_RDWR);
+	assert(fd_stdin  == 0);
+	int fd_stdout = open("/dev_tty0", O_RDWR);
+	assert(fd_stdout == 1);
+//	anim();
+	commandList();
+	while (1) {
+		printf("master@yeezyOS: $ ");
+
+		int r = read(fd_stdin, buff, 70);
+		buff[r] = 0;
+
+		if (!strcmp(buff, "help"))
+		{
+			clear();
+			commandList();
+		}
+		else if (!strcmp(buff, "clear"))
+		{
+			clear();
+		}
+		else if (!strcmp(buff, "game"))
+		{
+			gameList();
+		}
+		else if (!strcmp(buff, "calcul"))
+		{
+			clear();
+			calculator_main(&fd_stdin);
+			commandList();
+			continue;
+		}
+		else if (!strcmp(buff, "process")) 
+		{
+			clear();
+			runProcessManage(fd_stdin);
+			commandList();
+		}
+		else if (!strcmp(buff, "file")) 
+		{
+			clear();
+			runFileManage(fd_stdin);
+			clear();
+			commandList();
+		}
+		else if (!strcmp(buff, "sudoku")) 
+		{
+			sudoku_main(&fd_stdin);
+			commandList();
+		}
+		else if (!strcmp(buff, "calend"))
+		{
+			calendar_main(&fd_stdin);
+			commandList();
+		}
+		else if (!strcmp(buff, "bwchess"))
+		{
+			bwchess_main(&fd_stdin);
+			commandList();
+		}
+		else if (!strcmp(buff, "carry"))
+		{
+			carrycraft_main(&fd_stdin);
+			commandList();
+		}
+		else if (!strcmp(buff, "snake"))
+		{
+			snake_game(fd_stdin);
+			commandList();
+		}/*else if (!strcmp(buff, "mine"))
+		{
+			mine_main(fd_stdin);
+			commandList();
+		}*/
+		else   //找不到所输入
+		{
+			clear();
+			noSuchCom();
+		}
+	}	
+	for(;;);
+}
