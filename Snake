@@ -1,0 +1,217 @@
+
+/*************************************************************
+ * @Gluttonous Snake 
+ * @author sbw2053512
+ * ***********************************************************/
+#define ROW 10
+#define COL 24
+#define Up  0
+#define Down 1 
+#define Left 2
+#define Right 3
+#define LENGTH 2
+
+int score = 0;
+bool eated = false;
+int M[ROW][COL];
+int direction=0;
+int length=LENGTH;//4是因为move函数消去尾巴。这样蛇的长度打印出来为3
+int Coordinate[ROW * COL][2]={0,0};
+void welcome() {
+	printf("\n\n\n\n\n\n");
+	printf("   * * * * * * * * * * * * * *\n");
+	printf("                               \n");
+	printf("   *        WELCOME!         *\n");
+	printf("                               \n");
+	printf("   * * * * * * * * * * * * * *\n");
+}
+void rule() {
+	printf("Rule:\n");
+    printf("    Control the direction of the snake, look for something to eat,\n and be careful not to hit the wall and bite yourself!\n");
+	printf("\n\n\nEating food will get corresponding points.\n");
+	printf("     Your only goal is to become a long snake!\n");
+}
+ 
+void Initmap() {
+	for (int i = 0; i < ROW; i++)
+	{
+		for (int j = 0; j < COL; j++)
+		{
+			if (i == 0 || i == ROW - 1 || j == 0 || j == COL - 1)
+			{
+				M[i][j] = 1;//1为墙
+			}
+			else  M[i][j] = 0;//0不为0
+		}
+
+	}
+}
+void Drawmap() {
+    clear();
+    printf("\n\n\n\n\n\n");
+	for (int i = 0; i < ROW; i++)
+	{
+        printf("                     ");
+		for (int j = 0; j < COL; j++)
+		{
+			if (M[i][j] == 1)//wall
+                printf("*"); 
+			else if(M[i][j] == -1)//food
+                printf("&");
+            else if(M[i][j] == 2)//snake body
+                printf("#");
+            else if(M[i][j] == 3)//snake head
+                printf("@");
+            else printf(" ");
+		}
+        printf("\n");
+	}
+    printf("\n\nscore:%d\n",score);
+}
+void fuclength(){
+	length++;
+}
+void Initsnake() {
+	Coordinate[0][0] = ROW / 2;//0为横坐标
+	Coordinate[0][1] = COL / 2;//1为纵坐标
+	for (int i = 1; i < length; i++)
+	{
+		Coordinate[i][0] = Coordinate[0][0] + i;
+		Coordinate[i][1] = Coordinate[0][1];
+	}
+}
+void Drawsnake() {
+	for (int i = 0; i < length; i++)
+	{	
+        if(i==0)
+            M[Coordinate[i][0]][Coordinate[i][1]]=3;
+        else
+            M[Coordinate[i][0]][Coordinate[i][1]]=2;
+    }
+}
+void Move() {//从尾部开始后面的等于前面的坐标
+    M[Coordinate[length-1][0]][Coordinate[length-1][1]]=0;
+    for (int i = length - 1; i > 0; i--)
+	{
+		Coordinate[i][0] = Coordinate[i - 1][0];//行坐标
+		Coordinate[i][1] = Coordinate[i - 1][1];//列坐标
+	}
+    switch (direction)
+	{
+		case Up:
+			Coordinate[0][0]--;
+			break;
+		case Down:
+			Coordinate[0][0]++;
+			break;
+		case Left:
+			Coordinate[0][1]--;
+			break;
+		case Right:
+			Coordinate[0][1]++;
+			break;
+
+	}
+}
+void directioncontrol(int fd_stdin) {
+    char in[32];
+    printf("  W: Up\n  S: Down\n  A: Left\n  D: Rigth           \nWrite the direction what you want to walk: ");
+    read(fd_stdin, in, 32);
+    switch (in[0])
+    {
+        case 'W':
+        case 'w':
+            if (direction != Down)
+                direction = Up;
+            break;
+        case 'S':
+        case 's':
+            if (direction != Up)
+                direction = Down;
+            break;
+        case 'A':
+        case 'a':
+            if (direction != Right)
+                direction = Left;
+            break;
+        case 'D':
+        case 'd':
+            if (direction != Left)
+                direction = Right;
+            break;
+    }
+}
+bool death(){
+	bool isGameOver = false;
+	int sX = Coordinate[0][0], sY = Coordinate[0][1];      //蛇头的x坐标和y坐标
+	if (sX == 0 || sX == ROW - 1 || sY == 0 || sY == COL - 1)
+		isGameOver = true;
+	for (int i = 1; i < length; i++)    //判断有没有吃到自己
+	{
+		if (Coordinate[i][0] == sX && Coordinate[i][1] == sY)
+			isGameOver = true;
+	}
+	return isGameOver;
+}
+void Drawfood(){
+    int error=0;
+    while(!error)
+    {
+        int i = rand() % (ROW-2)+1;               //生成0~ROW-1之间的一个数
+        int j = rand() % (COL-2)+1;
+        error=1;
+        for (int k = 0; k < length; k++)
+        {
+            if (i == Coordinate[k][0] && j == Coordinate[k][1])
+                { 
+                    error=0;
+                    break;
+                }
+        }
+        M[i][j]=-1;
+    }
+}
+
+void snake_game(int fd_stdin){
+    clear();
+    welcome();
+    rule();
+    printf("\n                  push any key and continue\n");
+    char in[1];
+    read(fd_stdin, in, 1);
+    clear();
+    //init
+    Initmap();
+    Initsnake();
+    Drawsnake();
+    Drawfood();
+    Drawmap();
+    while(1)
+    {
+        Drawsnake();
+        Drawmap();
+        directioncontrol(fd_stdin);
+		Move();
+        if(death())
+        {
+            clear();
+            printf("\n                        Game Over             \n                  push any key and continue\n");
+            char in[1];
+            read(fd_stdin, in, 1);
+            break;
+        }
+        if (M[Coordinate[0][0]][Coordinate[0][1]] == -1)
+		{
+			eated = true;
+			if (eated == true)               //如果吃到了食物
+			{
+				fuclength();
+				eated = false;        //设置为false，不然无限变长
+			}
+			score += 10;
+			Drawfood();
+		//	M[Coordinate[0][0]][Coordinate[0][1]] = 0;
+            Drawsnake();
+		}
+    }
+}
