@@ -1,0 +1,241 @@
+
+#include "type.h"
+#include "stdio.h"
+#include "const.h"
+#include "protect.h"
+#include "string.h"
+#include "fs.h"
+#include "proc.h"
+#include "tty.h"
+#include "console.h"
+#include "global.h"
+#include "proto.h"
+
+#define NULL ((void*)0)
+
+/*======================================================================*
+                            	Process Manager
+ *======================================================================*
+							                        	 sbw    2022
+ *======================================================================*/
+
+
+ /*****************************************************************************
+ *                                processManager
+ *****************************************************************************/
+ //进程管理主函数
+ 
+void runProcessManage(int fd_stdin)
+{
+	clear();
+	char readbuffer[12];
+	
+	while (1)
+	{
+		Process_Welcome();
+		printf("SummerOS process-manager: $ ");
+
+		int end = read(fd_stdin, readbuffer, 12);
+		readbuffer[end] = 0;
+		int i = 0, j = 0;
+		//获得命令指令
+		char com[8] = { 0 };
+		while (readbuffer[i] != ' ' && readbuffer[i] != 0)
+		{
+			com[i] = readbuffer[i];
+			i++;
+		}
+		i++;
+		//获取命令目标
+		char number[2] = { 0 };
+		while (readbuffer[i] != ' ' && readbuffer[i] != 0)
+		{
+			number[j] = readbuffer[i];
+			i++;
+			j++;
+		}
+		//结束进程;
+		if (strcmp(com, "block") == 0)
+		{
+			clear();
+			block_a_Process(number);
+			continue;
+		}
+		//重启进程
+		else if (strcmp(com, "start") == 0)
+		{
+			clear();
+			start_a_Process(number);
+			continue;
+		}
+		//弹出提示
+		else if (strcmp(readbuffer, "help") == 0)
+		{
+			clear();
+			Process_Welcome();
+		}
+		//打印全部进程
+		else if (strcmp(readbuffer, "ps") == 0)
+		{
+			clear();
+			show_all_Process();
+		}
+		//退出进程管理
+		else if (strcmp(readbuffer, "quit") == 0)
+		{
+			clear();
+			break;
+		}
+		else if (!strcmp(readbuffer, "clear")) {
+			clear();
+		}
+		//错误命令提示
+		else
+		{
+			clear();
+			printf("\nSorry, there is no such command in this Process Management System.\n\n");
+		}
+		
+	}
+}
+
+
+//打印欢迎界面
+void Process_Welcome()
+{
+	printf("      ====================================================================\n");
+	printf("      #                            Welcome to          *******  *******  #\n");
+	printf("      #                     SummerOS ~ Process Manager *     *  *        #\n");
+	printf("      #                                                *     *  *******  #\n");
+	printf("      #                                                *     *        *  #\n");
+	printf("      #                                                *******  *******  #\n");
+	printf("      #                                                                  #\n");	
+	printf("      #             [COMMAND]                 [FUNCTION]                 #\n");
+	printf("      #                                                                  #\n");
+	printf("      #           $ clear        |     clear the cmd                     #\n");
+	printf("      #           $ ps           |     show all process                  #\n");
+	printf("      #           $ block id     |     block a process                   #\n");
+	printf("      #           $ start id     |     start a process                   #\n");
+	printf("      #           $ quit         |     quit process management system    #\n");
+	printf("      #           $ help         |     show command list of this system  #\n");
+	printf("      #                                                                  #\n");
+	printf("      #                                                                  #\n");
+	printf("      #                                                                  #\n");
+	printf("      #                                                                  #\n");
+	printf("      ====================================================================\n");
+
+	printf("\n\n");
+}
+
+//打印所有进程
+void show_all_Process()
+{
+	int i;
+	printf("===============================================================================\n");
+	printf("    ProcessID    *    ProcessName    *    ProcessPriority    *    Running?           \n");
+	//进程号，进程名，优先级，是否在运行
+	printf("-------------------------------------------------------------------------------\n");
+	for (i = 0; i < 8; i++)//逐个遍历
+	{
+		printf("        %d", proc_table[i].pid);
+		printf("                 %5s", proc_table[i].name);
+		printf("                   %2d", proc_table[i].priority);
+		if (proc_table[i].priority == 0)
+			printf("                   no\n");
+		else
+			printf("                   yes\n");
+
+	}
+	printf("===============================================================================\n\n");
+}
+int get_Mag(int n)
+{
+	int mag = 1;
+	for (int i = 0; i < n; i++)
+	{
+		mag = mag * 10;
+	}
+	return mag;
+}
+
+//计算进程pid
+int get_Pid(char str[])
+{
+	int length = 0;
+	for (; length < MAX_FILENAME_LEN; length++)
+	{
+		if (str[length] == '\0')
+		{
+			break;
+		}
+	}
+	int pid = 0;
+	for (int i = 0; i < length; i++)
+	{
+		if (str[i] - '0' > -1 && str[i] - '9' < 1)
+		{
+			pid = pid + (str[i] + 1 - '1') * get_Mag(length - 1 - i);
+		}
+		else
+		{
+			pid = -1;
+			break;
+		}
+	}
+	return pid;
+}
+
+//结束进程
+void block_a_Process(char str[])
+{
+	int pid = get_Pid(str);
+
+	//健壮性处理以及结束进程
+	if (pid >= 8 || pid < 0)
+	{
+		printf("The pid out of the range\n");
+	}
+	else if (pid < NR_TASKS)
+	{
+		printf("System tasks cannot be blocked.\n");
+	}
+	else if (proc_table[pid].priority == 0 || proc_table[pid].p_flags == -1)
+	{
+		printf("Process not found.\n");
+	}
+	else if (pid == 4 || pid == 6)
+	{
+		printf("This process cannot be blocked.\n");
+	}
+	else
+	{
+		proc_table[pid].priority = 0;
+		proc_table[pid].p_flags = -1;
+		printf("Target process has been blocked.\n");
+	}
+
+	show_all_Process();
+}
+
+//启进程
+void start_a_Process(char str[])
+{
+	int pid = get_Pid(str);
+
+	if (pid >= 8 || pid < 0)
+	{
+		printf("The pid out of the range\n");
+	}
+	else if (proc_table[pid].p_flags == 1)
+	{
+		printf("This process is already running.\n");
+	}
+	else
+	{
+		proc_table[pid].priority = 1;
+		proc_table[pid].p_flags = 1;
+		printf("Target process is running.\n");
+	}
+
+	show_all_Process();
+}
