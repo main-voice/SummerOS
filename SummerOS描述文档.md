@@ -16,7 +16,7 @@
 
  
 
-* **操作系统：**Ubuntu 64bits*(使用 VMware虚拟机)*
+* **操作系统：** Ubuntu 64bits*(使用 VMware虚拟机)*
 
 * **操作系统模拟器：**Bochs开源模拟器
 
