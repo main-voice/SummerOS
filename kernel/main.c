@@ -93,18 +93,12 @@ PUBLIC int kernel_main()
 			int ret = get_kernel_map(&k_base, &k_limit);
 			assert(ret == 0);
 			init_desc(&p->ldts[INDEX_LDT_C],
-				  0, /* bytes before the entry point
-				      * are useless (wasted) for the
-				      * INIT process, doesn't matter
-				      */
+				  0, 
 				  (k_base + k_limit) >> LIMIT_4K_SHIFT,
 				  DA_32 | DA_LIMIT_4K | DA_C | priv << 5);
 
 			init_desc(&p->ldts[INDEX_LDT_RW],
-				  0, /* bytes before the entry point
-				      * are useless (wasted) for the
-				      * INIT process, doesn't matter
-				      */
+				  0, 
 				  (k_base + k_limit) >> LIMIT_4K_SHIFT,
 				  DA_32 | DA_LIMIT_4K | DA_DRW | priv << 5);
 		}
@@ -697,12 +691,12 @@ void commandList()
 	printf("      #          &   *   &          |   calcul --- calculator            #\n");
 	printf("      #         &         &         |   process --- process manager      #\n");
 	printf("      #        &           &        |   file --- file manager            #\n");
-	printf("      #       &   *     *   &       |   game --- 5 games                 #\n");
-	printf("      #      &&             &&      |      -tic ---tic-tac-toe           #\n");
-	printf("      #     &&               &&     |      -bwchess --- black and white  #\n");
-	printf("      #    && &&&&       &&&& &&    |      -sudoku --- sudoku game       #\n");
-	printf("      #   &&& ---  &&&&&  --- &&&   |      -carry --- push boxes         #\n");
-	printf("      #     &&&&&  -----  &&&&&     |      -mine --- mine sweeping       #\n");
+	printf("      #       &   *     *   &       |   game --- 2 games                 #\n");
+	printf("      #      &&             &&      |                                    #\n");
+	printf("      #     &&               &&     |      -snake --- greedy snake       #\n");
+	printf("      #    && &&&&       &&&& &&    |      -mine --- mine sweeping       #\n");
+	printf("      #   &&& ---  &&&&&  --- &&&   |                                    #\n");
+	printf("      #     &&&&&  -----  &&&&&     |                                    #\n");
 	printf("      #           &&&&&&&           |                                    #\n");
 	printf("      #                                                                  #\n");
 	printf("      #                 $ Designed by  HKX PH SBW $                      #\n");
@@ -722,15 +716,15 @@ void gameList()
 	printf("      #             & &             |                                    #\n");
 	printf("      #            &   &            |                                    #\n");
 	printf("      #           &     &           |                                    #\n");
-	printf("      #          &   *   &          |     -bwchess --- black and white   #\n");
-	printf("      #         &         &         |                                    #\n");
-	printf("      #        &           &        |     -carry --- push boxes          #\n");
+	printf("      #          &   *   &          |     -snake --- greedy snake        #\n");
+	printf("      #         &         &         |     -mine --- mine sweeping        #\n");
+	printf("      #        &           &        |                                    #\n");
 	printf("      #       &   *     *   &       |                                    #\n");
-	printf("      #      &&             &&      |     -tic --- tic-tac-toe           #\n");
+	printf("      #      &&             &&      |                                    #\n");
 	printf("      #     &&               &&     |                                    #\n");
-	printf("      #    && &&&&       &&&& &&    |     -sudoku --- sudoku game        #\n");
+	printf("      #    && &&&&       &&&& &&    |                                    #\n");
 	printf("      #   &&& ---  &&&&&  --- &&&   |                                    #\n");
-	printf("      #     &&&&&  -----  &&&&&     |     -mine --- mine sweeping        #\n");
+	printf("      #     &&&&&  -----  &&&&&     |                                    #\n");
 	printf("      #           &&&&&&&           |                                    #\n");
 	printf("      #                                                                  #\n");
 	printf("      #                 $ Designed by  HKX PH SBW $                      #\n");

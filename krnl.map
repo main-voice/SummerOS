@@ -795,52 +795,52 @@ LOAD user/system.o
                 0x0000000000015000                . = ALIGN (CONSTANT (MAXPAGESIZE))
                 0x0000000000015000                . = SEGMENT_START ("rodata-segment", (ALIGN (CONSTANT (MAXPAGESIZE)) + (. & (CONSTANT (MAXPAGESIZE) - 0x1))))
 
-.rodata         0x0000000000015000     0x683b
+.rodata         0x0000000000015000     0x675b
  *(.rodata .rodata.* .gnu.linkonce.r.*)
  .rodata        0x0000000000015000       0x47 kernel/start.o
  *fill*         0x0000000000015047        0x1 
- .rodata        0x0000000000015048     0x187a kernel/main.o
- *fill*         0x00000000000168c2        0x2 
- .rodata        0x00000000000168c4       0x64 kernel/keyboard.o
- .rodata        0x0000000000016928      0x168 kernel/tty.o
- .rodata        0x0000000000016a90       0x5b kernel/console.o
- .rodata        0x0000000000016aeb       0x11 kernel/i8259.o
- .rodata        0x0000000000016afc       0x10 kernel/global.o
-                0x0000000000016afc                FSBUF_SIZE
-                0x0000000000016b00                MMBUF_SIZE
-                0x0000000000016b04                LOGBUF_SIZE
-                0x0000000000016b08                LOGDISKBUF_SIZE
- *fill*         0x0000000000016b0c       0x14 
- .rodata        0x0000000000016b20      0x580 kernel/protect.o
- .rodata        0x00000000000170a0      0x5b2 kernel/proc.o
- .rodata        0x0000000000017652       0x11 kernel/systask.o
- *fill*         0x0000000000017663        0x1 
- .rodata        0x0000000000017664      0x1c7 kernel/hd.o
- .rodata        0x000000000001782b       0x14 lib/printf.o
- *fill*         0x000000000001783f        0x1 
- .rodata        0x0000000000017840       0x66 lib/klib.o
- *fill*         0x00000000000178a6        0x2 
- .rodata        0x00000000000178a8       0x61 lib/misc.o
- .rodata        0x0000000000017909       0x21 lib/ls.o
- .rodata        0x000000000001792a       0x23 lib/open.o
- .rodata        0x000000000001794d       0x25 lib/getpid.o
- .rodata        0x0000000000017972       0x1e lib/syslog.o
- .rodata        0x0000000000017990       0x23 lib/exit.o
- *fill*         0x00000000000179b3        0x1 
- .rodata        0x00000000000179b4      0x254 fs/main.o
- .rodata        0x0000000000017c08      0x10f fs/open.o
- .rodata        0x0000000000017d17       0x29 fs/misc.o
- .rodata        0x0000000000017d40      0x184 fs/read_write.o
- .rodata        0x0000000000017ec4       0xb1 mm/main.o
- *fill*         0x0000000000017f75        0x3 
- .rodata        0x0000000000017f78      0x26b mm/forkexit.o
- *fill*         0x00000000000181e3        0x1 
- .rodata        0x00000000000181e4      0x1e2 fs/link.o
- *fill*         0x00000000000183c6        0x2 
- .rodata        0x00000000000183c8      0x7b3 fs/disklog.o
- *fill*         0x0000000000018b7b        0x1 
- .rodata        0x0000000000018b7c     0x17f4 user/app.o
- .rodata        0x000000000001a370     0x14cb user/system.o
+ .rodata        0x0000000000015048     0x1796 kernel/main.o
+ *fill*         0x00000000000167de        0x2 
+ .rodata        0x00000000000167e0       0x64 kernel/keyboard.o
+ .rodata        0x0000000000016844      0x168 kernel/tty.o
+ .rodata        0x00000000000169ac       0x5b kernel/console.o
+ .rodata        0x0000000000016a07       0x11 kernel/i8259.o
+ .rodata        0x0000000000016a18       0x10 kernel/global.o
+                0x0000000000016a18                FSBUF_SIZE
+                0x0000000000016a1c                MMBUF_SIZE
+                0x0000000000016a20                LOGBUF_SIZE
+                0x0000000000016a24                LOGDISKBUF_SIZE
+ *fill*         0x0000000000016a28       0x18 
+ .rodata        0x0000000000016a40      0x580 kernel/protect.o
+ .rodata        0x0000000000016fc0      0x5b2 kernel/proc.o
+ .rodata        0x0000000000017572       0x11 kernel/systask.o
+ *fill*         0x0000000000017583        0x1 
+ .rodata        0x0000000000017584      0x1c7 kernel/hd.o
+ .rodata        0x000000000001774b       0x14 lib/printf.o
+ *fill*         0x000000000001775f        0x1 
+ .rodata        0x0000000000017760       0x66 lib/klib.o
+ *fill*         0x00000000000177c6        0x2 
+ .rodata        0x00000000000177c8       0x61 lib/misc.o
+ .rodata        0x0000000000017829       0x21 lib/ls.o
+ .rodata        0x000000000001784a       0x23 lib/open.o
+ .rodata        0x000000000001786d       0x25 lib/getpid.o
+ .rodata        0x0000000000017892       0x1e lib/syslog.o
+ .rodata        0x00000000000178b0       0x23 lib/exit.o
+ *fill*         0x00000000000178d3        0x1 
+ .rodata        0x00000000000178d4      0x254 fs/main.o
+ .rodata        0x0000000000017b28      0x10f fs/open.o
+ .rodata        0x0000000000017c37       0x29 fs/misc.o
+ .rodata        0x0000000000017c60      0x184 fs/read_write.o
+ .rodata        0x0000000000017de4       0xb1 mm/main.o
+ *fill*         0x0000000000017e95        0x3 
+ .rodata        0x0000000000017e98      0x26b mm/forkexit.o
+ *fill*         0x0000000000018103        0x1 
+ .rodata        0x0000000000018104      0x1e2 fs/link.o
+ *fill*         0x00000000000182e6        0x2 
+ .rodata        0x00000000000182e8      0x7b3 fs/disklog.o
+ *fill*         0x0000000000018a9b        0x1 
+ .rodata        0x0000000000018a9c     0x17f4 user/app.o
+ .rodata        0x000000000001a290     0x14cb user/system.o
 
 .rodata1
  *(.rodata1)
@@ -849,76 +849,76 @@ LOAD user/system.o
  *(.eh_frame_hdr)
  *(.eh_frame_entry .eh_frame_entry.*)
 
-.eh_frame       0x000000000001b83c     0x1fb0
+.eh_frame       0x000000000001b75c     0x1fb0
  *(.eh_frame)
- .eh_frame      0x000000000001b83c       0x50 kernel/start.o
- .eh_frame      0x000000000001b88c      0x1a4 kernel/main.o
+ .eh_frame      0x000000000001b75c       0x50 kernel/start.o
+ .eh_frame      0x000000000001b7ac      0x1a4 kernel/main.o
                                         0x1d0 (size before relaxing)
- .eh_frame      0x000000000001ba30       0x6c kernel/clock.o
+ .eh_frame      0x000000000001b950       0x6c kernel/clock.o
                                          0x98 (size before relaxing)
- .eh_frame      0x000000000001ba9c       0xfc kernel/keyboard.o
+ .eh_frame      0x000000000001b9bc       0xfc kernel/keyboard.o
                                         0x128 (size before relaxing)
- .eh_frame      0x000000000001bb98      0x15c kernel/tty.o
+ .eh_frame      0x000000000001bab8      0x15c kernel/tty.o
                                         0x19c (size before relaxing)
- .eh_frame      0x000000000001bcf4      0x180 kernel/console.o
+ .eh_frame      0x000000000001bc14      0x180 kernel/console.o
                                         0x1c0 (size before relaxing)
- .eh_frame      0x000000000001be74       0x6c kernel/i8259.o
+ .eh_frame      0x000000000001bd94       0x6c kernel/i8259.o
                                          0x98 (size before relaxing)
- .eh_frame      0x000000000001bee0       0xb8 kernel/protect.o
+ .eh_frame      0x000000000001be00       0xb8 kernel/protect.o
                                          0xf8 (size before relaxing)
- .eh_frame      0x000000000001bf98      0x20c kernel/proc.o
+ .eh_frame      0x000000000001beb8      0x20c kernel/proc.o
                                         0x260 (size before relaxing)
- .eh_frame      0x000000000001c1a4       0x64 kernel/systask.o
+ .eh_frame      0x000000000001c0c4       0x64 kernel/systask.o
                                          0xa4 (size before relaxing)
- .eh_frame      0x000000000001c208      0x22c kernel/hd.o
+ .eh_frame      0x000000000001c128      0x22c kernel/hd.o
                                         0x26c (size before relaxing)
- .eh_frame      0x000000000001c434       0x48 lib/printf.o
+ .eh_frame      0x000000000001c354       0x48 lib/printf.o
                                          0x74 (size before relaxing)
- .eh_frame      0x000000000001c47c       0x68 lib/vsprintf.o
+ .eh_frame      0x000000000001c39c       0x68 lib/vsprintf.o
                                          0xa8 (size before relaxing)
- .eh_frame      0x000000000001c4e4       0xac lib/klib.o
+ .eh_frame      0x000000000001c404       0xac lib/klib.o
                                          0xec (size before relaxing)
- .eh_frame      0x000000000001c590       0xa0 lib/misc.o
+ .eh_frame      0x000000000001c4b0       0xa0 lib/misc.o
                                          0xe0 (size before relaxing)
- .eh_frame      0x000000000001c630       0x24 lib/ls.o
+ .eh_frame      0x000000000001c550       0x24 lib/ls.o
                                          0x50 (size before relaxing)
- .eh_frame      0x000000000001c654       0x24 lib/open.o
+ .eh_frame      0x000000000001c574       0x24 lib/open.o
                                          0x50 (size before relaxing)
- .eh_frame      0x000000000001c678       0x24 lib/read.o
+ .eh_frame      0x000000000001c598       0x24 lib/read.o
                                          0x50 (size before relaxing)
- .eh_frame      0x000000000001c69c       0x24 lib/write.o
+ .eh_frame      0x000000000001c5bc       0x24 lib/write.o
                                          0x50 (size before relaxing)
- .eh_frame      0x000000000001c6c0       0x24 lib/close.o
+ .eh_frame      0x000000000001c5e0       0x24 lib/close.o
                                          0x50 (size before relaxing)
- .eh_frame      0x000000000001c6e4       0x24 lib/unlink.o
+ .eh_frame      0x000000000001c604       0x24 lib/unlink.o
                                          0x50 (size before relaxing)
- .eh_frame      0x000000000001c708       0x24 lib/getpid.o
+ .eh_frame      0x000000000001c628       0x24 lib/getpid.o
                                          0x50 (size before relaxing)
- .eh_frame      0x000000000001c72c       0x24 lib/syslog.o
+ .eh_frame      0x000000000001c64c       0x24 lib/syslog.o
                                          0x50 (size before relaxing)
- .eh_frame      0x000000000001c750       0x24 lib/exit.o
+ .eh_frame      0x000000000001c670       0x24 lib/exit.o
                                          0x50 (size before relaxing)
- .eh_frame      0x000000000001c774       0x24 lib/wait.o
+ .eh_frame      0x000000000001c694       0x24 lib/wait.o
                                          0x50 (size before relaxing)
- .eh_frame      0x000000000001c798      0x16c fs/main.o
+ .eh_frame      0x000000000001c6b8      0x16c fs/main.o
                                         0x1ac (size before relaxing)
- .eh_frame      0x000000000001c904      0x164 fs/open.o
+ .eh_frame      0x000000000001c824      0x164 fs/open.o
                                         0x1a4 (size before relaxing)
- .eh_frame      0x000000000001ca68       0x90 fs/misc.o
+ .eh_frame      0x000000000001c988       0x90 fs/misc.o
                                          0xd0 (size before relaxing)
- .eh_frame      0x000000000001caf8       0x30 fs/read_write.o
+ .eh_frame      0x000000000001ca18       0x30 fs/read_write.o
                                          0x5c (size before relaxing)
- .eh_frame      0x000000000001cb28       0x84 mm/main.o
+ .eh_frame      0x000000000001ca48       0x84 mm/main.o
                                          0xc4 (size before relaxing)
- .eh_frame      0x000000000001cbac       0x6c mm/forkexit.o
+ .eh_frame      0x000000000001cacc       0x6c mm/forkexit.o
                                          0x98 (size before relaxing)
- .eh_frame      0x000000000001cc18       0x80 fs/link.o
+ .eh_frame      0x000000000001cb38       0x80 fs/link.o
                                          0xc0 (size before relaxing)
- .eh_frame      0x000000000001cc98       0x60 fs/disklog.o
+ .eh_frame      0x000000000001cbb8       0x60 fs/disklog.o
                                          0x8c (size before relaxing)
- .eh_frame      0x000000000001ccf8      0x824 user/app.o
+ .eh_frame      0x000000000001cc18      0x824 user/app.o
                                         0x878 (size before relaxing)
- .eh_frame      0x000000000001d51c      0x2d0 user/system.o
+ .eh_frame      0x000000000001d43c      0x2d0 user/system.o
                                         0x310 (size before relaxing)
  *(.eh_frame.*)
 
