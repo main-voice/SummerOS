@@ -827,8 +827,7 @@ void mkdir(char *cur_dir, char *new_dir_name)
 ####  在Ubuntu22.04中修改代码后的编译过程中出现了重定义问题。
 
 在网上查阅解决方案时发现是由于使用gcc 10.0以上版本就会出现该错误，Ubuntu22.04的gcc版本为11.2.0, 于是ubuntu22.04上使用gcc-9版本
-
-![img](https://gs0deem2h7.feishu.cn/space/api/box/stream/download/asynccode/?code=ZDk2OGE1ZTM0MjkwNjRmNzE1ZDM2OWIzNGNmZWY0MjRfNkhuNGR6OE9yY212ZmNFM2NHUHd5SU5kRjg3M0tTNFJfVG9rZW46Ym94Y254TG9rRktRYWpGMHA0V1Y2OXplYkRkXzE2NjAyMTkwODk6MTY2MDIyMjY4OV9WNA)解决方法：
+解决方法：
 
 1.   下载gcc-9与g++-9 
 
