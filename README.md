@@ -1,6 +1,3 @@
-# SummerOS
-同济大学操作系统课程设计
-
 # 1 项目描述
 
 ## 1.1 项目目的
@@ -801,10 +798,64 @@ void mkdir(char *cur_dir, char *new_dir_name)
 }
 ```
 
-# 4 成员分工
+# 4 遇到的问题
+
+#### Make image 时出现的问题
+
+1.  **Fatal error: sys/cdefs.h: No such file or directory**
+    1.  解决方法：命令行输入：
+    2.  ```Apache
+        sudo apt-get --reinstall install libc6 libc6-dev
+        ```
+
+1.  **Could not get lock /var/lib/dpkg/lock-frontend**
+    1.  解决方法：命令行输入：
+    2.  ```undefined
+        sudo rm /var/lib/dpkg/lock-frontend
+        ```
+
+1.  **mount: ./mnt/floppy/: mount point does not exist.**
+    1.  解决方法：在mnt文件夹下面新建floppy文件夹，需要命令行新建，无法鼠标新建
+
+fs-disklog.c修改过
+
+动画：include-anim.h    console   main.c
+
+**[错误: fatal error: bits/libc-header-start.h: No such file or directory #include ](https://www.cnblogs.com/xuyaowen/p/libc-header-start.html)**
+
+出现这个错误时，这多半是你所编译的项目是在64位机器上生成32位的项目，你需要安装对应的gcc 32位的库；此时检查gcc一定有-m32的存在；
+
+你系统中gcc没有安装multilib 库；使用这个库可以在64位的机器上产生32位的程序或者库文件；
+
+选择：apt install gcc-multilib进行完善安装；
+
+####  在Ubuntu22.04中修改代码后的编译过程中出现了重定义问题。
+
+在网上查阅解决方案时发现是由于使用gcc 10.0以上版本就会出现该错误，Ubuntu22.04的gcc版本为11.2.0, 于是ubuntu22.04上使用gcc-9版本
+
+![img](https://gs0deem2h7.feishu.cn/space/api/box/stream/download/asynccode/?code=ZDk2OGE1ZTM0MjkwNjRmNzE1ZDM2OWIzNGNmZWY0MjRfNkhuNGR6OE9yY212ZmNFM2NHUHd5SU5kRjg3M0tTNFJfVG9rZW46Ym94Y254TG9rRktRYWpGMHA0V1Y2OXplYkRkXzE2NjAyMTkwODk6MTY2MDIyMjY4OV9WNA)解决方法：
+
+1.   下载gcc-9与g++-9 
+
+     sudo apt install gcc-9 g++-9
+
+2.   将gcc g++版本都切换为9
+
+     -   sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 100
+     -   sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 100
+3. 再次查看gcc版本，可以看到版本已经变成9.4.0了
+
+    -   gcc -v
+# 5 成员分工
 
 | 学号    | 姓名   | 分工                 |
 | :------ | :----- | :------------------- |
-| 2051488 | 韩可欣 | 开机动画、控制台、计算器|                     
+| 2051488 | 韩可欣 | 开机动画、控制台、计算器|                  
 | 2053380 | 彭浩   | 文件管理、扫雷、日历 |
 | 2053512 | 孙博闻 | 进程管理以及贪吃蛇   |
+
+# 6 项目地址
+
+https://github.com/main-voice/SummerOS
+
+在final分支里
