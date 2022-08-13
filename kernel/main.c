@@ -1,4 +1,3 @@
-
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                             main.c
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -264,22 +263,22 @@ void noSuchCom()
 	printf("      #                                                                  #\n");
 	printf("      #                                                                  #\n");
 	printf("      #                                                                  #\n");
-	printf("      #                                          ---NOTICE---            #\n");
-	printf("      #                                                                  #\n");
-	printf("      #                                             Sorry                #\n");
-	printf("      #                                                                  #\n");
-	printf("      #                                         No such command          #\n");
-	printf("      #                                                                  #\n");
-	printf("      #                                       For more information       #\n");
-	printf("      #                                                                  #\n");
-	printf("      #                                          Input  [help]           #\n");
-	printf("      #                                                                  #\n");
-	printf("      #                                                                  #\n");
-	printf("      #                                                                  #\n");
-	printf("      #                                                                  #\n");
-	printf("      #                                                                  #\n");
-	printf("      #                                                                  #\n");
-	printf("      #                                                                  #\n");
+	printf("      #               &                |         ---NOTICE---            #\n");
+	printf("      #              & &               |                                 #\n");
+	printf("      #             &   &              |            Sorry                #\n");
+	printf("      #            &     &             |                                 #\n");
+	printf("      #           &   *   &            |        No such command          #\n");
+	printf("      #          &         &           |                                 #\n");
+	printf("      #         &           &          |      For more information       #\n");
+	printf("      #        &   *     *   &         |                                 #\n");
+	printf("      #       &&             &&        |         Input  [help]           #\n");
+	printf("      #      &&               &&       |                                 #\n");
+	printf("      #     && &&&&       &&&& &&      |                                 #\n");
+	printf("      #    &&& ---  &&&&&  --- &&&     |                                 #\n");
+	printf("      #      &&&&&  -----  &&&&&       |                                 #\n");
+	printf("      #            &&&&&&&             |                                 #\n");
+	printf("      #                     $ Designed by  HKX PH SBW $                  #\n");
+	printf("      #                     $ TONGJI UNIVERSITY  2022 $                  #\n");
 	printf("      ====================================================================\n");
 	printf("\n\n");
 }
