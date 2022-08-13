@@ -1,4 +1,3 @@
-
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                             app.c
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -744,16 +743,16 @@ PUBLIC int get_choice();
 PUBLIC void print_result(int num1, int num2, int result, int choice);
 PUBLIC void calculator_menu();
 PUBLIC void calculator_main();
-int curPtr = 0;//ȫ��ָ��
+int curPtr = 0;//global pointer
 
-// ����ṹ��
+// single item structure
 struct Item {
-	int data;	//������
-	int tag;	//0�����ţ�1������
+	int data;	//data item
+	int tag;	//0:operator;1:number
 };
 
 
-//����ջ
+//number stack 
 int numStack[100] = { 0 };
 int numTop = -1;
 
@@ -785,7 +784,7 @@ void clearNum(void) {
 }
 
 
-//����ջ
+//operator stack
 char oprStack[100] = { '\0'};
 int oprTop = -1;
 
@@ -822,7 +821,7 @@ void clearOpr(void) {
 }
 
 
-//����ջ
+//bracket stack
 char bracketStack[100] = "\0";
 int bracketTop = -1;
 
@@ -849,7 +848,6 @@ void clearBracket(void) {
 	bracketTop = -1;
 }
 
-//ջ�����ȼ�
 int priorityInStack(char c)
 {
 	switch (c)
@@ -861,7 +859,7 @@ int priorityInStack(char c)
 	case ')':return 6;
 	}
 }
-//ջ�����ȼ�
+
 int priorityOutStack(char c)
 {
 	switch (c)
@@ -874,13 +872,13 @@ int priorityOutStack(char c)
 	}
 }
 
-// ���ӽ�β��ʶ
+// add end symbol 
 void addEndTag(char* exp) {
 	int i = strlen(exp);
 	exp[i] = ' ';
 	exp[i + 1] = '@';
 }
-// �ж������
+// judge operator
 bool isOpr(char c)
 {
 	if (c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')' || c == '@') {
@@ -888,23 +886,23 @@ bool isOpr(char c)
 	}
 	return False;
 }
-// �ж�����
+// judge single number
 bool isDigit(char c)
 {
 	return (c >= '0' && c <= '9');
 }
-//�ж���
+//judge whole number
 bool isNum(char* exp)
 {
 	char c = exp[0];
 	if (c == '+' && strlen(exp) > 1)
-		//  +i ֻ�� i
+		
 	{
-		exp = exp + 1;	//ɾ��+
-		c = exp[0];		//����һ��c
+		exp = exp + 1;	//delete+
+		c = exp[0];		//updatec
 	}
 
-	if (isDigit(c) || (c == '-' && strlen(exp) > 1))//�������������
+	if (isDigit(c) || (c == '-' && strlen(exp) > 1))//store different kinds of numbers
 	{
 		return True;
 	}
@@ -923,14 +921,14 @@ struct Item WeNext(char* exp)
 		if (c != ' ')
 		{
 			temp[index] = c;
-			index++;	//�ո�ָ�Ԫ����,�ǿո�����
+			index++;	//space for divide items
 		}
 		else
 		{
 			while (exp[i] == ' ') {
 				i++;
 			}
-			curPtr = i;	//ָ����һ��λ��,������ǰ�����Ѱ��
+			curPtr = i;	//ָto find next item
 			break;
 		}
 	}
@@ -973,13 +971,13 @@ int calculate(struct Item e[], int size)
 {
 	clearNum();
 	for (int i = 0; i < size; ++i) {
-		if (e[i].tag == 1) {//��������־�ѹ��ջ��
+		if (e[i].tag == 1) {//is number
 			pushNum(e[i].data);
 		}
-		else {// ����ǲ��������ʹ�ջ�е�����������������
+		else {//is operator
 			int n2 = popNum();
 			int n1 = popNum();
-			pushNum(basCal(n1, n2,e[i].data));// �ٽ�������ѹ��ջ��
+			pushNum(basCal(n1, n2,e[i].data));// push in stack
 		}
 	}
 	return popNum();
@@ -1002,7 +1000,7 @@ int advanceCalculate(char* input) {
 			++pos;
 		}
 	}
-	// ��ʼ��
+	// initialize
 	clearNum();
 	clearOpr();
 	curPtr = 0;
@@ -1010,10 +1008,9 @@ int advanceCalculate(char* input) {
 	struct Item result[100];
 	int index = 0;
 
-	// �ڱ���ʽβ�����ӽ�����ʶ��
 	addEndTag(exp);
 
-	pushOpr('@');//����ѭ������
+	pushOpr('@');//enter loop
 	struct Item elem = WeNext(exp);
 	while (!isEmpty_opr()) {
 		char ch = elem.data;
@@ -1023,13 +1020,13 @@ int advanceCalculate(char* input) {
 			index++;
 			elem = WeNext(exp);
 		}
-		else if (elem.tag == 0) {	//�Ƚ����ȼ�
+		else if (elem.tag == 0) {	//compare priority
 			char topEle = getOprTop();
-			if (priorityInStack(topEle) < priorityOutStack(ch)) {		//��ǰ���������ȼ���
+			if (priorityInStack(topEle) < priorityOutStack(ch)) {		
 				pushOpr(ch);
 				elem = WeNext(exp);
 			}
-			else if (priorityInStack(topEle) > priorityOutStack(ch)) {	//��ǰ���ȼ�С
+			else if (priorityInStack(topEle) > priorityOutStack(ch)) {	
 				struct Item buf;
 				buf.data = popOpr();
 				buf.tag = 0;
@@ -1037,7 +1034,7 @@ int advanceCalculate(char* input) {
 				index++;
 			}
 			else {
-				if (getOprTop() == '(') {	//����˳������������������һ������
+				if (getOprTop() == '(') {	//"(" exit for next item
 					elem = WeNext(exp);
 				}
 				popOpr();
@@ -1048,7 +1045,6 @@ int advanceCalculate(char* input) {
 	return calculate(result, index);
 }
 
-// �����Ƿ�ƥ��
 bool checkBracket(char* exp) {
 
 	char ch = '\0';
@@ -1068,7 +1064,6 @@ bool checkBracket(char* exp) {
 	return isEmpty_bracket();
 }
 
-/*�жϱ���ʽ�Ƿ��зǷ�����*/
 bool checkOpr(char* exp) {
 	for (int i = 0; i < strlen(exp); ++i) {
 		if (isDigit(exp[i]) || isOpr(exp[i]) || exp[i] == ' ') {
@@ -1113,16 +1108,16 @@ int get_choice(int* fd_stdin)
 	{
 		printf("\n #========================#");
 		printf("\n #=====   1.add      =====#");
-		printf("\n #=====  2.minus    =====#");
+		printf("\n #=====   2.minus    =====#");
 		printf("\n #=====   3.mutiply  =====#");
-		printf("\n #=====  4.division =====#");
-		printf("\n #=====   5.advance =====#");
+		printf("\n #=====   4.division =====#");
+		printf("\n #=====   5.advance  =====#");
 		printf("\n #=====   0.exit     =====#");
 		printf("\n #========================#\n");
 		printf("Please select a function :");
 
 
-		int t = read(*fd_stdin, option, 512);//���ض�ȡ���ֽ���
+		int t = read(*fd_stdin, option, 512);//return number of characters
 		option[t] = '\0';
 		choice = option[0] - '0';
 
